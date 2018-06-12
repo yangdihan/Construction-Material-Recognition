@@ -1,6 +1,6 @@
 # Construction-Material-Recognition
 
-An autodesk forge extension to backproject images taken on construction project to BIM models on forge viewer. Our work is built on the work from Amir Ibrahim. Our viewer is set up using work by Wilfredo Calderon Torres. The models are uploaded using modelderivative-nodejs-tutorial-master.
+An autodesk forge extension to backproject images taken on construction project to BIM models on forge viewer. Our work is built on the work from Amir Ibrahim. Our viewer is set up using work by Wilfredo Calderon Torres. The models are uploaded using modelderivative-nodejs-tutorial-master. The theoretical origin of our work is inspired by the Kevin Han.
 
 ## Getting Started
 
