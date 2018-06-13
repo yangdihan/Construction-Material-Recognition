@@ -13,28 +13,26 @@ These instructions will get you a copy of the project up and running on your loc
 2) Secure bucket key with Oauth transaction, refer to 
 https://developer.autodesk.com/en/docs/data/v2/tutorials/upload-file/
 
-3) clone Construction-Material-Recognition to local repo 
-```
-git git@github.com:yangdihan/Construction-Material-Recognition.git
-cd Construction-Material-Recognition
-```
-
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
-
+1) Clone Construction-Material-Recognition to local repo 
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+git git@github.com:yangdihan/Construction-Material-Recognition.git
 ```
 
+2) Navigate to local Construction-Material-Recognition folder
+```
+cd Construction-Material-Recognition
+```
+
+3) Install node and node dependencies
+```
+npm install
+```
+
+4) 
 End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
