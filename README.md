@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1) Register an app on autodesk forge viewer to secure clientID and clientSecret, refer to https://developer.autodesk.com/en/docs/oauth/v2/tutorials/create-app/
 
-2) Secure bucket key with Oauth transaction, refer to 
+2) Secure bucket key with Oauth transaction, refer to <br />
 https://developer.autodesk.com/en/docs/data/v2/tutorials/upload-file/
 
 ### Installing
