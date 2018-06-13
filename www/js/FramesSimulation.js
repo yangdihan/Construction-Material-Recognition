@@ -189,12 +189,14 @@ class FramesSimulation {
           });
           if(sum-255*pixelData.length/4 > 0){   //check if the frame includes any element
             console.log("Element detected: "+fid);
-            let frameData = {name:frame.name+"_"+fid, data: pixelData, gps: frame.gps}
+            // let frameData = {name:frame.name+"_"+fid, data: pixelData, gps: frame.gps}
+            let frameData = {name:frame.name+"_"+fid, data: pixelData}
             captures.push(frameData);
           }
         }
       }else{
-        let frameData = {name:frame.name, data:this._readPixels(), gps: frame.gps}
+        // let frameData = {name:frame.name, data:this._readPixels(), gps: frame.gps}
+        let frameData = {name:frame.name, data:this._readPixels()}
         captures.push(frameData);
         if(onRenderFunction){
           onRenderFunction(frameData);
@@ -505,7 +507,7 @@ class FramesSimulation {
       return
     }
     var zip = new JSZip();
-    var jsonData = {};
+    // var jsonData = {};
     const canvas = document.createElement('canvas');
     const width = this._renderer.customSize.width;
     const height = this._renderer.customSize.height;
@@ -526,11 +528,12 @@ class FramesSimulation {
       }
       ctx.putImageData(imageData, 0, 0);
       var data = canvas.toDataURL("image/jpeg");
-      let fileName = capture.name + '.jpeg';
+      // let fileName = capture.name + '.jpeg';
+      let fileName = capture.name;
       zip.file(fileName, data.split(',')[1],{base64: true});
-      jsonData[fileName] = capture.gps;
+      // jsonData[fileName] = capture.gps;
     }
-    zip.file('data.json', JSON.stringify(jsonData));
+    // zip.file('data.json', JSON.stringify(jsonData));
     zip.generateAsync({type:"blob"}).then((content)=>{
       saveAs(content, name+".zip");
     });
