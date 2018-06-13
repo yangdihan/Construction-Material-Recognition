@@ -8,10 +8,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+1) Register an app on autodesk forge viewer to secure clientID and clientSecret, refer to https://developer.autodesk.com/en/docs/oauth/v2/tutorials/create-app/
 
+2) Secure bucket key with Oauth transaction, refer to https://developer.autodesk.com/en/docs/data/v2/tutorials/upload-file/
+
+3) clone Construction-Material-Recognition to local repo 
 ```
-Give examples
+git git@github.com:yangdihan/Construction-Material-Recognition.git
+cd Construction-Material-Recognition
 ```
 
 ### Installing
