@@ -49,16 +49,34 @@ MyAwesomeExtension.prototype.createUI = function () {
     // 23.6mm from online
 
     var frame_obj = jQuery.getJSON("/cameras.out",function(json){
-      console.log(json);
+      // console.log(json);
       cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
       cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
       // let focal =  frame_obj.responseJSON[0].camera0['Focal length'];
 
       //cameraParams.fov = something;
-
-      let frame_sim = new FramesSimulation(viewer, model, cameraParams);
+      let framesList = [];
+      let i = 0
+      frame_obj.responseJSON.forEach(function(frame){
+        let key = "camera"+i;
+        framesList.push({'position':frame[key].Position, 'target':frame[key].LookAt, 'up':frame[key].Up, 'name':frame[key].Image});
+        i += 1;
+      })
       
-    })
+      let frame_sim = new FramesSimulation(viewer, model, cameraParams);
+      // console.log(cameraParams)
+      frame_sim.setIndexModel();
+      frame_sim.setWhiteLight();
+      frame_sim.startSimulation(framesList, false,
+        (captureData)=>{
+          console.log("Rendering frame: " + captureData.name);
+        },
+        (captures)=>{
+          console.log("Exporting");
+          frame_sim.exportFrames("test_project",captures);
+        });
+    });
+
 
 
 
