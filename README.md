@@ -32,8 +32,10 @@ cd Construction-Material-Recognition
 npm install
 ```
 
-4) 
-End with an example of getting some data out of the system or using it for a little demo
+4) Run local server 
+```
+node start.js
+```
 
 ## Running the tests
 
