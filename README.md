@@ -63,5 +63,5 @@ Construction-Material-Recognition is currently in beta version
 ## Acknowledgments
 
 * Amir Ibrahim
-* Wilfredo Torees
+* Wilfredo Torres
 * Jacob Lin
