@@ -59,7 +59,14 @@ MyAwesomeExtension.prototype.createUI = function () {
       let i = 0
       frame_obj.responseJSON.forEach(function(frame){
         let key = "camera"+i;
-        framesList.push({'position':frame[key].Position, 'target':frame[key].LookAt, 'up':frame[key].Up, 'name':frame[key].Image});
+        framesList.push({ position:   frame[key].Position, 
+                          target:     frame[key].LookAt, 
+                          up:         frame[key].Up, 
+                          name:       frame[key].Image, 
+                          translation:frame[key].Translation,
+                          rotation:   frame[key].Rotation,
+                          scale:      frame[key].Scale
+                        });
         i += 1;
       })
       
@@ -67,6 +74,7 @@ MyAwesomeExtension.prototype.createUI = function () {
       // console.log(cameraParams)
       frame_sim.setIndexModel();
       frame_sim.setWhiteLight();
+
       frame_sim.startSimulation(framesList, false,
         (captureData)=>{
           console.log("Rendering frame: " + captureData.name);
@@ -81,7 +89,7 @@ MyAwesomeExtension.prototype.createUI = function () {
 
 
 
-    alert('I am an extension');
+    // alert('I am an extension');
 
   };
   // myAwesomeToolbarButton CSS class should be defined on your .css file

@@ -100,6 +100,7 @@ class FramesSimulation {
     this._viewer.clearSelection();
     // Pubsub.publishSync(Events.POINT_CLOUD_SET_VISIBILITY,false);
     // Pubsub.publishSync(Events.BIM_SET_ALL_ENABLED,false);
+    this._viewer.setEnvMapBackground(false);
     this._viewer.setBackgroundColor(0,0,0);
     this.toggleSceneObjects(true);
     let cam = this._getCamera();
@@ -115,6 +116,7 @@ class FramesSimulation {
 
     // recursive structure to retreive images
     this._syncTimeout(30).then(()=>{
+
       let captures = [];
       this._getFrames(framesList, 0, captures, separateElements, onRenderFunction, onCompleteFunction);
     });
@@ -169,21 +171,44 @@ class FramesSimulation {
     * @param {callback} onCompleteFunction - Execute a callback after simulation is ended, frame data is passed
     */
   _getFrames(framesList, currentIndex, captures, separateElements, onRenderFunction, onCompleteFunction){
+
     if(!this._simRunning){
       this.endSimulation()
       return
     }
+
     let frame = framesList[currentIndex];
-    let cam = this._getCamera();
-    cam.position.copy(frame.position);
-    cam.target.copy(frame.target);
-    cam.up.copy(frame.up);
+    // console.log(frame)
+
+
+    // let cam = this._getCamera();
+    let cam = this._getCamera().clone();
+
+
+    let pos = new THREE.Vector3().fromArray(frame.position);
+    let tar = new THREE.Vector3().fromArray(frame.target)
+    let up = new THREE.Vector3().fromArray(frame.up)
+    let trans = new THREE.Vector3().fromArray(frame.translation);
+    let rotate = new THREE.Matrix3().fromArray(frame.rotation);
+    let scale = frame.scale;
+
+    // let cam = {position:pos, target:tar, up:up, dirty:true};
+                        
+
+    cam.position.copy(pos); // this line makes model flash disappear in viewer
+    // because this copy changed the param of viewer default cam obj
+    cam.target.copy(tar);
+    cam.up.copy(up);
     cam.dirty = true;
+
+    
+
+
     this._syncTimeout(30).then(()=>{
       if(separateElements){
         for(let fid in this.simModel.idToMesh){
           this._occludeElement(fid);
-          let pixelData = this._readPixels();
+          let pixelData = this._readPixels(cam);
           let sum = pixelData.reduce((accumulator, currentValue) =>{
             accumulator + currentValue
           });
@@ -196,8 +221,10 @@ class FramesSimulation {
         }
       }else{
         // let frameData = {name:frame.name, data:this._readPixels(), gps: frame.gps}
-        let frameData = {name:frame.name, data:this._readPixels()}
+        let frameData = {name:frame.name, data:this._readPixels(cam)}
+
         captures.push(frameData);
+
         if(onRenderFunction){
           onRenderFunction(frameData);
         }
@@ -238,11 +265,12 @@ class FramesSimulation {
     * Read the rendered pixels
     *@return {number[]} Array of pixel data in the format [R,G,B,A, ...]
     */
-  _readPixels(){
+  _readPixels(cam){
     let renderer = this._renderer;
     let gl = renderer.getContext();
     let scene = this._getScene("Visual_Simulation");
-    let camera = this._getCamera();
+    // let camera = this._getCamera();
+    let camera = cam;
     renderer.clear();
     renderer.render(scene, camera);
     let renderSize = renderer.customSize;
