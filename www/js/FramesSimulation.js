@@ -77,8 +77,10 @@ class FramesSimulation {
     let customSize = {
       height: height,
       width: width,
-      y: Math.round(window.innerHeight/2 - height/2),
-      x: Math.round(window.innerWidth/2 - width/2)
+      // y: Math.round(window.innerHeight/2 - height/2),
+      // x: Math.round(window.innerWidth/2 - width/2)
+      y: Math.round(this._viewer.impl.glrenderer().context.canvas.style.height/2 - height/2),
+      x: Math.round(this._viewer.impl.glrenderer().context.canvas.style.width/2 - width/2)
     }
     this._renderer.customSize = customSize;
   }
@@ -182,7 +184,7 @@ class FramesSimulation {
 
 
     // let cam = this._getCamera();
-    let cam = this._getCamera().clone();
+    let cam = this._getCamera();
 
 
     let pos = new THREE.Vector3().fromArray(frame.position);
@@ -193,22 +195,23 @@ class FramesSimulation {
     let scale = frame.scale;
 
     // let cam = {position:pos, target:tar, up:up, dirty:true};
+    // let basis = new THREE.Matrix4.makeBasis()
                         
-
+    // console.log(cam.fov)
     cam.position.copy(pos); // this line makes model flash disappear in viewer
     // because this copy changed the param of viewer default cam obj
     cam.target.copy(tar);
     cam.up.copy(up);
+    cam.fov = this._cameraParams.fov;
+    cam.rotation.copy(rotate)
+    cam.scale.copy(new THREE.Vector3(scale, scale, scale));
     cam.dirty = true;
-
-    
-
 
     this._syncTimeout(30).then(()=>{
       if(separateElements){
         for(let fid in this.simModel.idToMesh){
           this._occludeElement(fid);
-          let pixelData = this._readPixels(cam);
+          let pixelData = this._readPixels();
           let sum = pixelData.reduce((accumulator, currentValue) =>{
             accumulator + currentValue
           });
@@ -221,7 +224,11 @@ class FramesSimulation {
         }
       }else{
         // let frameData = {name:frame.name, data:this._readPixels(), gps: frame.gps}
-        let frameData = {name:frame.name, data:this._readPixels(cam)}
+        let frameData = {name:frame.name, data:this._readPixels()}
+
+        // console.log(this._viewer.impl.glrenderer())
+        // console.log(this._renderer)
+        // debugger
 
         captures.push(frameData);
 
@@ -265,12 +272,12 @@ class FramesSimulation {
     * Read the rendered pixels
     *@return {number[]} Array of pixel data in the format [R,G,B,A, ...]
     */
-  _readPixels(cam){
+  _readPixels(){
     let renderer = this._renderer;
     let gl = renderer.getContext();
     let scene = this._getScene("Visual_Simulation");
-    // let camera = this._getCamera();
-    let camera = cam;
+    let camera = this._getCamera();
+    // let camera = cam;
     renderer.clear();
     renderer.render(scene, camera);
     let renderSize = renderer.customSize;
@@ -572,11 +579,12 @@ class FramesSimulation {
     * @param {boolean} customSize Whether resizing for simulation or back to normal size.
     */
   _resizeRenderer(customSize = true){
+    console.log(this._renderer.customSize)
     if(customSize){
       const size = this._renderer.customSize;
       this._renderer.setViewport(size.x, size.y, size.width, size.height);
     }else{
-      this._renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+      this._renderer.setViewport(0, 0, this._viewer.impl.glrenderer().context.canvas.style.width, this._viewer.impl.glrenderer().context.canvas.style.height);
     }
   }
 

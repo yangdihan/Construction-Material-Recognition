@@ -42,7 +42,7 @@ MyAwesomeExtension.prototype.createUI = function () {
     // **********************
     let viewer = viewerApp.myCurrentViewer;
     let model = viewer.model;
-    let cameraParams = {'height': 0, 'width': 0, 'fov': 66.4941355};
+    let cameraParams = {'height': 320, 'width': 550, 'fov': 66.4941355};
 
     // fov = 2*arctan(23.6/(18*2))
     // 18mm from exif tag given by Jacob
@@ -50,8 +50,8 @@ MyAwesomeExtension.prototype.createUI = function () {
 
     var frame_obj = jQuery.getJSON("/cameras.out",function(json){
       // console.log(json);
-      cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
-      cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
+      // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
+      // cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
       // let focal =  frame_obj.responseJSON[0].camera0['Focal length'];
 
       //cameraParams.fov = something;
