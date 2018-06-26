@@ -48,7 +48,7 @@ MyAwesomeExtension.prototype.createUI = function () {
     // 18mm from exif tag given by Jacob
     // 23.6mm from online
 
-    var frame_obj = jQuery.getJSON("/cameras.out",function(json){
+    var frame_obj = jQuery.getJSON("/cameras15.out",function(json){
       // console.log(json);
       // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
       // cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
