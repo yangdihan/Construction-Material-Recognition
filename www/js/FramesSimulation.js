@@ -79,8 +79,8 @@ class FramesSimulation {
       width: width,
       // y: Math.round(window.innerHeight/2 - height/2),
       // x: Math.round(window.innerWidth/2 - width/2)
-      y: Math.round(this._viewer.impl.glrenderer().context.canvas.style.height/2 - height/2),
-      x: Math.round(this._viewer.impl.glrenderer().context.canvas.style.width/2 - width/2)
+      y: Math.round(this._viewer.impl.glrenderer().context.canvas.clientHeight/2 - height/2),
+      x: Math.round(this._viewer.impl.glrenderer().context.canvas.clientWidth/2 - width/2)
     }
     this._renderer.customSize = customSize;
   }
@@ -224,11 +224,12 @@ class FramesSimulation {
         }
       }else{
         // let frameData = {name:frame.name, data:this._readPixels(), gps: frame.gps}
+        // debugger
         let frameData = {name:frame.name, data:this._readPixels()}
 
         // console.log(this._viewer.impl.glrenderer())
         // console.log(this._renderer)
-        // debugger
+
 
         captures.push(frameData);
 
@@ -285,6 +286,7 @@ class FramesSimulation {
     //dihan did not read anything
     //where does the color take place for building
     gl.readPixels(renderSize.x, renderSize.y, renderSize.width, renderSize.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
     return pixels.slice(0);
   }
 
@@ -586,7 +588,7 @@ class FramesSimulation {
       const size = this._renderer.customSize;
       this._renderer.setViewport(size.x, size.y, size.width, size.height);
     }else{
-      this._renderer.setViewport(0, 0, this._viewer.impl.glrenderer().context.canvas.style.width, this._viewer.impl.glrenderer().context.canvas.style.height);
+      this._renderer.setViewport(0, 0, this._viewer.impl.glrenderer().context.canvas.clientWidth, this._viewer.impl.glrenderer().context.canvas.clientHeight);
     }
   }
 
