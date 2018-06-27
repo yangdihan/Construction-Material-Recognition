@@ -282,6 +282,8 @@ class FramesSimulation {
     renderer.render(scene, camera);
     let renderSize = renderer.customSize;
     var pixels = new Uint8Array(renderSize.width*renderSize.height*4);
+    //dihan did not read anything
+    //where does the color take place for building
     gl.readPixels(renderSize.x, renderSize.y, renderSize.width, renderSize.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
     return pixels.slice(0);
   }
