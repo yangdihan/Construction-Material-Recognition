@@ -180,12 +180,14 @@ class FramesSimulation {
     }
 
     let frame = framesList[currentIndex];
-    // console.log(frame)
 
+    console.log('frame') 
+    console.log(frame)
 
     // let cam = this._getCamera();
     let cam = this._getCamera();
-
+    cam.updateMatrix(true);
+    cam.updateMatrixWorld(true);
 
     let pos = new THREE.Vector3().fromArray(frame.position);
     let tar = new THREE.Vector3().fromArray(frame.target)
@@ -193,6 +195,31 @@ class FramesSimulation {
     let trans = new THREE.Vector3().fromArray(frame.translation);
     let rotate = new THREE.Matrix3().fromArray(frame.rotation);
     let scale = frame.scale;
+
+    // attempted to add in Jacob's code
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // // to map cameras.out cameras into registration
+    // const array = [0.5965101718902588, -0.06093583256006241, -0.008314155973494053, 0, 0.06125907227396965, 0.595889687538147, 0.027738701552152634, 0, 0.00544303935021162, -0.028441766276955605, 0.5989725589752197, 0, -18.273792266845703, 4.099245071411133, -14.949145317077637, 1] // array of transformation matrix
+
+    // // assuming camera variable contains camera object created from cameras.out
+    // const regMat= new THREE.Matrix4().fromArray(array);
+
+    // console.log('before vectors')
+    // console.log(pos);
+    // console.log(tar);
+    // console.log(up);
+
+    // tar.applyMatrix4(regMat);
+    // pos.applyMatrix4(regMat);
+    // up.applyMatrix4(regMat);
+    // up.sub(pos).normalize();
+
+    // console.log('after vectors')
+    // console.log(pos);
+    // console.log(tar);
+    // console.log(up);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // let cam = {position:pos, target:tar, up:up, dirty:true};
     // let basis = new THREE.Matrix4.makeBasis()
