@@ -42,27 +42,45 @@ MyAwesomeExtension.prototype.createUI = function () {
     // **********************
     let viewer = viewerApp.myCurrentViewer;
     let model = viewer.model;
-    let cameraParams = {'height': 320, 'width': 550, 'fov': 66.4941355};
+    let cameraParams = {'height': 311, 'width': 536, 'fov': 66.4941355};
 
     // fov = 2*arctan(23.6/(18*2))
     // 18mm from exif tag given by Jacob
     // 23.6mm from online
 
-    var frame_obj = jQuery.getJSON("/cameras.out",function(json){
+    var frame_obj = jQuery.getJSON("/self_made_cameras.out",function(json){
       // console.log(json);
       // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
       // cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
       // let focal =  frame_obj.responseJSON[0].camera0['Focal length'];
 
-      console.log(json);
+      // console.log(json);
+
+
+      // to map cameras.out cameras into registration
+      const array = [0.5965101718902588, -0.06093583256006241, -0.008314155973494053, 0, 0.06125907227396965, 0.595889687538147, 0.027738701552152634, 0, 0.00544303935021162, -0.028441766276955605, 0.5989725589752197, 0, -18.273792266845703, 4.099245071411133, -14.949145317077637, 1] // array of transformation matrix
+
+      // assuming camera variable contains camera object created from cameras.out
+       const regMat= new THREE.Matrix4().fromArray(array);
       //cameraParams.fov = something;
       let framesList = [];
       let i = 0;
       frame_obj.responseJSON.forEach(function(frame){
+
         let key = "camera"+i;
-        framesList.push({ position:   frame[key].Position, 
-                          target:     frame[key].LookAt, 
-                          up:         frame[key].Up, 
+        let pos = new THREE.Vector3().fromArray(frame[key].Position);
+        let tar = new THREE.Vector3().fromArray(frame[key].LookAt);
+        let up = new THREE.Vector3().fromArray(frame[key].Up);
+        // only rotate 
+
+        // tar.applyMatrix4(regMat);
+        // pos.applyMatrix4(regMat);
+        // up.applyMatrix4(regMat);
+        // up.sub(pos).normalize();
+
+        framesList.push({ position:   pos, 
+                          target:     tar, 
+                          up:         up, 
                           name:       frame[key].Image, 
                           translation:frame[key].Translation,
                           rotation:   frame[key].Rotation,
@@ -73,7 +91,9 @@ MyAwesomeExtension.prototype.createUI = function () {
       
       let frame_sim = new FramesSimulation(viewer, model, cameraParams);
       // console.log(cameraParams)
-      frame_sim.setIndexModel();
+      ////////////////////////////////
+      // frame_sim.setIndexModel()
+      frame_sim.setColorModel()
       frame_sim.setWhiteLight();
 
       frame_sim.startSimulation(framesList, false,

@@ -179,59 +179,38 @@ class FramesSimulation {
       return
     }
 
-    let frame = framesList[currentIndex];
+    // let frame = framesList[currentIndex];
 
-    console.log('frame') 
-    console.log(frame)
-
+    // // let cam = this._getCamera();
     // let cam = this._getCamera();
-    let cam = this._getCamera();
-    cam.updateMatrix(true);
-    cam.updateMatrixWorld(true);
+    console.log(framesList)
 
-    let pos = new THREE.Vector3().fromArray(frame.position);
-    let tar = new THREE.Vector3().fromArray(frame.target)
-    let up = new THREE.Vector3().fromArray(frame.up)
-    let trans = new THREE.Vector3().fromArray(frame.translation);
-    let rotate = new THREE.Matrix3().fromArray(frame.rotation);
-    let scale = frame.scale;
+    // // let pos = new THREE.Vector3().fromArray(frame.position);
+    // // let tar = new THREE.Vector3().fromArray(frame.target)
+    // // let up = new THREE.Vector3().fromArray(frame.up)
+    // // let trans = new THREE.Vector3().fromArray(frame.translation);
+    // // let rotate = new THREE.Matrix3().fromArray(frame.rotation);
+    // // let scale = frame.scale;
 
-    // attempted to add in Jacob's code
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // // to map cameras.out cameras into registration
-    // const array = [0.5965101718902588, -0.06093583256006241, -0.008314155973494053, 0, 0.06125907227396965, 0.595889687538147, 0.027738701552152634, 0, 0.00544303935021162, -0.028441766276955605, 0.5989725589752197, 0, -18.273792266845703, 4.099245071411133, -14.949145317077637, 1] // array of transformation matrix
-
-    // // assuming camera variable contains camera object created from cameras.out
-    // const regMat= new THREE.Matrix4().fromArray(array);
-
-    // console.log('before vectors')
-    // console.log(pos);
-    // console.log(tar);
-    // console.log(up);
-
-    // tar.applyMatrix4(regMat);
-    // pos.applyMatrix4(regMat);
-    // up.applyMatrix4(regMat);
-    // up.sub(pos).normalize();
-
-    // console.log('after vectors')
-    // console.log(pos);
-    // console.log(tar);
-    // console.log(up);
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // let cam = {position:pos, target:tar, up:up, dirty:true};
-    // let basis = new THREE.Matrix4.makeBasis()
+    // // let cam = {position:pos, target:tar, up:up, dirty:true};
+    // // let basis = new THREE.Matrix4.makeBasis()
                         
-    // console.log(cam.fov)
-    cam.position.copy(pos); // this line makes model flash disappear in viewer
-    // because this copy changed the param of viewer default cam obj
-    cam.target.copy(tar);
-    cam.up.copy(up);
-    cam.fov = this._cameraParams.fov;
-    cam.rotation.copy(rotate)
-    cam.scale.copy(new THREE.Vector3(scale, scale, scale));
+    // // console.log(cam.fov)
+    // cam.position.copy(pos); // this line makes model flash disappear in viewer
+    // // because this copy changed the param of viewer default cam obj
+    // cam.target.copy(tar);
+    // cam.up.copy(up);
+    // cam.fov = this._cameraParams.fov;
+    // cam.rotation.copy(rotate)
+    // cam.scale.copy(new THREE.Vector3(scale, scale, scale));
+    // cam.dirty = true;
+
+
+    let frame = framesList[currentIndex];
+    let cam = this._getCamera();
+    cam.position.copy(frame.position);
+    cam.target.copy(frame.target);
+    cam.up.copy(frame.up);
     cam.dirty = true;
 
     this._syncTimeout(30).then(()=>{
@@ -267,6 +246,7 @@ class FramesSimulation {
       console.log("Pixels data retrieved for frame: " + frame.name);
 
       if(currentIndex+1<framesList.length){     // Recurse in waypoints if there are still waypoints in the mission
+        // return; /// uncomment to stop render in motionf
         this._getFrames(framesList, currentIndex+1, captures, separateElements, onRenderFunction, onCompleteFunction)
       }else{    // Exit recursion
         this.endSimulation();
@@ -584,6 +564,7 @@ class FramesSimulation {
     for(let capture of captures){
       var imageData = ctx.createImageData(width,height);
       const L = capture.data.length-1;
+      /////////////////////////////
       // Since the capture data starts from lower left but canvas draws from top left,
       // we have to reverse the pixels
       for(var i=0; i<L; i+=4){
@@ -591,6 +572,7 @@ class FramesSimulation {
         imageData.data[L-i-2] = capture.data[i+1];
         imageData.data[L-i-1] = capture.data[i+2];
         imageData.data[L-i] = capture.data[i+3];
+
       }
       ctx.putImageData(imageData, 0, 0);
       var data = canvas.toDataURL("image/jpeg");

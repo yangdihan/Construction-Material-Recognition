@@ -1,0 +1,145 @@
+c {uuid: "9C64B6D7-B460-4BE8-B1A0-4D6859E71CE2", name: "", type: "Camera", parent: undefined, children: Array(4), …}
+aspect
+:
+0.9764705882352941
+bottom
+:
+-195.55505136299644
+castShadow
+:
+false
+children
+:
+(4) [T…E.DirectionalLight, T…E.Object3D, T…E.DirectionalLight, T…E.Object3D]
+clientHeight
+:
+680
+clientWidth
+:
+664
+dirty
+:
+false
+eulerOrder
+:
+(...)
+far
+:
+570.7960492198692
+fov
+:
+53.13010235415598
+frustumCulled
+:
+true
+isPerspective
+:
+false
+left
+:
+-190.95375603680827
+matrix
+:
+THREE.Matrix4 {elements: Float32Array(16)}
+matrixAutoUpdate
+:
+true
+matrixWorld
+:
+THREE.Matrix4 {elements: Float32Array(16)}
+matrixWorldInverse
+:
+THREE.Matrix4 {elements: Float32Array(16)}
+matrixWorldNeedsUpdate
+:
+false
+name
+:
+""
+near
+:
+211.42413260484108
+orthoScale
+:
+391.1101027259929
+orthographicCamera
+:
+THREE.OrthographicCamera {uuid: "3C79B20F-6F25-44C3-871D-5A8F843DEFD5", name: "", type: "OrthographicCamera", parent: undefined, children: Array(0), …}
+parent
+:
+undefined
+perspectiveCamera
+:
+THREE.PerspectiveCamera {uuid: "C401E8C6-F9AC-46AF-95E7-FBE335B41A4B", name: "", type: "PerspectiveCamera", parent: undefined, children: Array(0), …}
+pivot
+:
+THREE.Vector3 {x: -12.497806549072266, y: -8.595645904541016, z: 94.66666412353516}
+position
+:
+THREE.Vector3 {x: 213.30972290039062, y: -234.40316772460938, z: 320.47418212890625}
+projectionMatrix
+:
+THREE.Matrix4 {elements: Float32Array(16)}
+quaternion
+:
+THREE.Quaternion {_x: 0.42470820912447566, _y: 0.17591989467072866, _z: 0.33985113709944637, _w: 0.8204732328709081, onChangeCallback: ƒ}
+receiveShadow
+:
+false
+renderOrder
+:
+0
+right
+:
+190.95375603680827
+rotation
+:
+THREE.Euler {_x: 0.7853981633974483, _y: 0.6154796959790712, _z: 0.5235987671569564, _order: "XYZ", onChangeCallback: ƒ}
+rotationAutoUpdate
+:
+true
+saveFov
+:
+0
+scale
+:
+THREE.Vector3 {x: 1, y: 1, z: 1}
+target
+:
+THREE.Vector3 {x: -12.497806549072266, y: -8.595645904541016, z: 94.66666412353516}
+top
+:
+195.55505136299644
+type
+:
+"Camera"
+up
+:
+THREE.Vector3 {x: 0, y: 0, z: 1}
+useQuaternion
+:
+(...)
+userData
+:
+{}
+uuid
+:
+"9C64B6D7-B460-4BE8-B1A0-4D6859E71CE2"
+visible
+:
+true
+worldUpTransform
+:
+THREE.Matrix4 {elements: Float32Array(16)}
+worldup
+:
+THREE.Vector3 {x: 0, y: 0, z: 1}
+zoom
+:
+1
+id
+:
+34
+__proto__
+:
+THREE.Camera
