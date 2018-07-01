@@ -48,7 +48,7 @@ MyAwesomeExtension.prototype.createUI = function () {
     // 18mm from exif tag given by Jacob
     // 23.6mm from online
 
-    var frame_obj = jQuery.getJSON("/self_made_cameras.out",function(json){
+    var frame_obj = jQuery.getJSON("/cameras.out",function(json){
       // console.log(json);
       // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
       // cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
@@ -58,10 +58,9 @@ MyAwesomeExtension.prototype.createUI = function () {
 
 
       // to map cameras.out cameras into registration
-      const array = [0.5965101718902588, -0.06093583256006241, -0.008314155973494053, 0, 0.06125907227396965, 0.595889687538147, 0.027738701552152634, 0, 0.00544303935021162, -0.028441766276955605, 0.5989725589752197, 0, -18.273792266845703, 4.099245071411133, -14.949145317077637, 1] // array of transformation matrix
-
+      const array = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3.809330940246582, 2.619952917098999, -28.854400634765625, 1];
       // assuming camera variable contains camera object created from cameras.out
-       const regMat= new THREE.Matrix4().fromArray(array);
+      const regMat= new THREE.Matrix4().fromArray(array);
       //cameraParams.fov = something;
       let framesList = [];
       let i = 0;
@@ -73,10 +72,10 @@ MyAwesomeExtension.prototype.createUI = function () {
         let up = new THREE.Vector3().fromArray(frame[key].Up);
         // only rotate 
 
-        // tar.applyMatrix4(regMat);
-        // pos.applyMatrix4(regMat);
-        // up.applyMatrix4(regMat);
-        // up.sub(pos).normalize();
+        tar.applyMatrix4(regMat);
+        pos.applyMatrix4(regMat);
+        up.applyMatrix4(regMat);
+        up.sub(pos).normalize();
 
         framesList.push({ position:   pos, 
                           target:     tar, 
