@@ -48,7 +48,7 @@ MyAwesomeExtension.prototype.createUI = function () {
     // 18mm from exif tag given by Jacob
     // 23.6mm from online
 
-    var frame_obj = jQuery.getJSON("/cameras.out",function(json){
+    var frame_obj = jQuery.getJSON("/self_made_cameras.out",function(json){
       // console.log(json);
       // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
       // cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
@@ -70,29 +70,29 @@ MyAwesomeExtension.prototype.createUI = function () {
         let pos = new THREE.Vector3().fromArray(frame[key].Position);
         let tar = new THREE.Vector3().fromArray(frame[key].LookAt);
         let up = new THREE.Vector3().fromArray(frame[key].Up);
-        // only rotate 
+        // only rotate
 
         tar.applyMatrix4(regMat);
         pos.applyMatrix4(regMat);
         up.applyMatrix4(regMat);
         up.sub(pos).normalize();
 
-        framesList.push({ position:   pos, 
-                          target:     tar, 
-                          up:         up, 
-                          name:       frame[key].Image, 
+        framesList.push({ position:   pos,
+                          target:     tar,
+                          up:         up,
+                          name:       frame[key].Image,
                           translation:frame[key].Translation,
                           rotation:   frame[key].Rotation,
                           scale:      frame[key].Scale
                         });
         i += 1;
       })
-      
+
       let frame_sim = new FramesSimulation(viewer, model, cameraParams);
       // console.log(cameraParams)
       ////////////////////////////////
-      // frame_sim.setIndexModel()
-      frame_sim.setColorModel()
+      frame_sim.setIndexModel()
+      // frame_sim.setColorModel()
       frame_sim.setWhiteLight();
 
       frame_sim.startSimulation(framesList, false,

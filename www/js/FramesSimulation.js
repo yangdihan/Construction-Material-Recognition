@@ -194,7 +194,7 @@ class FramesSimulation {
 
     // // let cam = {position:pos, target:tar, up:up, dirty:true};
     // // let basis = new THREE.Matrix4.makeBasis()
-                        
+
     // // console.log(cam.fov)
     // cam.position.copy(pos); // this line makes model flash disappear in viewer
     // // because this copy changed the param of viewer default cam obj
@@ -567,13 +567,23 @@ class FramesSimulation {
       /////////////////////////////
       // Since the capture data starts from lower left but canvas draws from top left,
       // we have to reverse the pixels
-      for(var i=0; i<L; i+=4){
-        imageData.data[L-i-3] = capture.data[i];
-        imageData.data[L-i-2] = capture.data[i+1];
-        imageData.data[L-i-1] = capture.data[i+2];
-        imageData.data[L-i] = capture.data[i+3];
-
+      // for (var i=0; i<L; i+=4){
+      //   imageData.data[L-i-3] = capture.data[i];
+      //   imageData.data[L-i-2] = capture.data[i+1];
+      //   imageData.data[L-i-1] = capture.data[i+2];
+      //   imageData.data[L-i] = capture.data[i+3];
+      // }
+      // add by Dihan, export zheng
+      for (var j=0; j<height; j++){
+        const l = width*4;
+        for (var i=0; i<l; i+=4){
+          imageData.data[4*j*width+l-i-3] = capture.data[4*j*width+i];
+          imageData.data[4*j*width+l-i-2] = capture.data[4*j*width+i+1];
+          imageData.data[4*j*width+l-i-1] = capture.data[4*j*width+i+2];
+          imageData.data[4*j*width+l-i] = capture.data[4*j*width+i+3];
+        }
       }
+
       ctx.putImageData(imageData, 0, 0);
       var data = canvas.toDataURL("image/jpeg");
       // let fileName = capture.name + '.jpeg';
