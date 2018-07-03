@@ -48,6 +48,11 @@ MyAwesomeExtension.prototype.createUI = function () {
     // 18mm from exif tag given by Jacob
     // 23.6mm from online
 
+    // testing to move camera to the first camera pose
+    // viewerApp.myCurrentViewer.navigation.setView(new THREE.Vector3(21.88064542561721,13.817563731188882,1.6856400787354566),new THREE.Vector3(-45.036478165609594,11.941944398531113,4.577064673806156))
+    // viewerApp.myCurrentViewer.navigation.setCameraUpVector(new THREE.Vector3(-0.16401953573392578, -0.26826054116278564,0.9492807139896381))
+
+
     var frame_obj = jQuery.getJSON("/cameras.out",function(json){
       // console.log(json);
       // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
