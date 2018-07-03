@@ -209,8 +209,9 @@ class FramesSimulation {
     let frame = framesList[currentIndex];
     let cam = this._getCamera();
     cam.position.copy(frame.position);
-    cam.target.copy(frame.target);
     cam.up.copy(frame.up);
+    cam.scale.copy(new THREE.Vector3(0.29, 0.29, 0.29));
+    cam.lookAt(frame.view);
     cam.dirty = true;
 
     this._syncTimeout(30).then(()=>{
