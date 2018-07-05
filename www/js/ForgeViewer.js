@@ -18,6 +18,7 @@ function onDocumentLoadSuccess(doc) {
   // However, when using a ViewingApplication, we have access to the **bubble** attribute,
   // which references the root node of a graph that wraps each object from the Manifest JSON.
   var viewables = viewerApp.bubble.search({ 'type': 'geometry' });
+  console.log(viewables);
   if (viewables.length === 0) {
     console.error('Document contains no viewables.');
     return;
@@ -25,6 +26,15 @@ function onDocumentLoadSuccess(doc) {
 
   // Choose any of the available viewables
   viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
+  
+  const path = doc.getViewablePath(viewables[0].data);
+  
+  const posOptions = { 
+      placementTransform: (new THREE.Matrix4()).setPosition({x:0,y:0,z:0})//.scale({x:0.29,y:0.29,z:0.29}) 
+  };
+
+  let viewer = viewerApp.getCurrentViewer();
+  viewer.loadModel(path, posOptions);
 }
 
 function onDocumentLoadFailure(viewerErrorCode) {
@@ -33,6 +43,7 @@ function onDocumentLoadFailure(viewerErrorCode) {
 
 function onItemLoadSuccess(viewer, item) {
   // item loaded, any custom action?
+  console.log(viewer, item);
 }
 
 function onItemLoadFail(errorCode) {

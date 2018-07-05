@@ -48,7 +48,12 @@ MyAwesomeExtension.prototype.createUI = function () {
     // 18mm from exif tag given by Jacob
     // 23.6mm from online
 
-    var frame_obj = jQuery.getJSON("/self_made_cameras.out",function(json){
+    // testing to move camera to the first camera pose
+    // viewerApp.myCurrentViewer.navigation.setView(new THREE.Vector3(21.88064542561721,13.817563731188882,1.6856400787354566),new THREE.Vector3(-45.036478165609594,11.941944398531113,4.577064673806156))
+    // viewerApp.myCurrentViewer.navigation.setCameraUpVector(new THREE.Vector3(-0.16401953573392578, -0.26826054116278564,0.9492807139896381))
+
+
+    var frame_obj = jQuery.getJSON("/cameras.out",function(json){
       // console.log(json);
       // cameraParams.height = frame_obj.responseJSON[0].camera0.Height;
       // cameraParams.width = frame_obj.responseJSON[0].camera0.Width;
@@ -58,7 +63,7 @@ MyAwesomeExtension.prototype.createUI = function () {
 
 
       // to map cameras.out cameras into registration
-      const array = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 3.809330940246582, 2.619952917098999, -28.854400634765625, 1];
+      const array = [0.5965101718902588, -0.06093583256006241, -0.008314155973494053, 0, 0.06125907227396965, 0.595889687538147, 0.027738701552152634, 0, 0.00544303935021162, -0.028441766276955605, 0.5989725589752197, 0, -18.273792266845703, 4.099245071411133, -14.949145317077637, 1] // array of transformation matrix
       // assuming camera variable contains camera object created from cameras.out
       const regMat= new THREE.Matrix4().fromArray(array);
       //cameraParams.fov = something;
@@ -69,13 +74,17 @@ MyAwesomeExtension.prototype.createUI = function () {
         let key = "camera"+i;
         let pos = new THREE.Vector3().fromArray(frame[key].Position);
         let tar = new THREE.Vector3().fromArray(frame[key].LookAt);
-        let up = new THREE.Vector3().fromArray(frame[key].Up);
-        // only rotate
-
+        let up = new THREE.Vector3().fromArray(frame[key].Up).normalize();;
+        let view = new THREE.Vector3().fromArray(frame[key].View);
+        up = up.clone().add(pos);
+        // only rotate 
+        view.applyMatrix4(regMat);
         tar.applyMatrix4(regMat);
         pos.applyMatrix4(regMat);
         up.applyMatrix4(regMat);
         up.sub(pos).normalize();
+
+
 
         framesList.push({ position:   pos,
                           target:     tar,
@@ -83,7 +92,9 @@ MyAwesomeExtension.prototype.createUI = function () {
                           name:       frame[key].Image,
                           translation:frame[key].Translation,
                           rotation:   frame[key].Rotation,
-                          scale:      frame[key].Scale
+                          scale:      frame[key].Scale,
+                          view:       view
+
                         });
         i += 1;
       })
