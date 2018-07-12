@@ -178,36 +178,51 @@ class FramesSimulation {
       this.endSimulation()
       return
     }
-
-    // let frame = framesList[currentIndex];
-
-    // // let cam = this._getCamera();
-    // let cam = this._getCamera();
-    console.log(framesList)
-
-    // // let pos = new THREE.Vector3().fromArray(frame.position);
-    // // let tar = new THREE.Vector3().fromArray(frame.target)
-    // // let up = new THREE.Vector3().fromArray(frame.up)
-    // // let trans = new THREE.Vector3().fromArray(frame.translation);
-    // // let rotate = new THREE.Matrix3().fromArray(frame.rotation);
-    // // let scale = frame.scale;
-
-    // // let cam = {position:pos, target:tar, up:up, dirty:true};
-    // // let basis = new THREE.Matrix4.makeBasis()
-
-    // // console.log(cam.fov)
-    // cam.position.copy(pos); // this line makes model flash disappear in viewer
-    // // because this copy changed the param of viewer default cam obj
-    // cam.target.copy(tar);
-    // cam.up.copy(up);
-    // cam.fov = this._cameraParams.fov;
-    // cam.rotation.copy(rotate)
-    // cam.scale.copy(new THREE.Vector3(scale, scale, scale));
-    // cam.dirty = true;
-
+    
 
     let frame = framesList[currentIndex];
     let cam = this._getCamera();
+
+
+
+    let scene = this._getScene("Visual_Simulation");
+
+    //create a red LineBasicMaterial for the up vector
+    var material1 = new THREE.LineBasicMaterial( { color: 0xff0000 } );
+
+    let up = new THREE.Vector3().copy(frame.position).add(frame.up.multiplyScalar(10));
+
+    var geometry1 = new THREE.Geometry();
+
+    geometry1.vertices.push(frame.position);
+
+    geometry1.vertices.push(up);
+
+    console.log(geometry1.vertices)
+
+    //create a blue LineBasicMaterial for the view vector
+    var material2 = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+
+    let temp = new THREE.Vector3().copy(frame.target).normalize().multiplyScalar(10);
+    let view = new THREE.Vector3().copy(frame.position).add(temp);
+
+    var geometry2 = new THREE.Geometry();
+
+    geometry2.vertices.push(frame.position);
+    geometry2.vertices.push(view);
+
+    console.log(geometry2.vertices)
+
+    var line1 = new THREE.Line( geometry1, material1 );
+    var line2 = new THREE.Line( geometry2, material2 );
+
+
+    scene.add( line1 );
+    scene.add( line2 );
+
+
+    //////////////////////
+
     cam.position.copy(frame.position);
     cam.up.copy(frame.up);
     cam.scale.copy(new THREE.Vector3(0.29, 0.29, 0.29));
